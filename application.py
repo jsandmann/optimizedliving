@@ -1,5 +1,4 @@
 from flask import Flask, render_template
-import requests
 import webbrowser
 import base64
 import os
