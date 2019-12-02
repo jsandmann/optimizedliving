@@ -24,28 +24,25 @@ def getlikedsongs():
   scope=parsed_json['scope']
   expires_in=parsed_json['expires_in']
   access_token=parsed_json['access_token']
-  print(scope)
-  print(token_type)
-  print(expires_in)
 
   #Get Tracks
-  Tracks = []
+#   Tracks = []
 
-  url = "https://api.spotify.com/v1/me/tracks?next"
-  headers = {'Authorization': "Bearer {}".format(access_token)}
-  response = requests.request("GET", url, headers=headers)
-  if response.status_code ==200:
-      print('yaaaaaay success')
-  data = response.json()
+#   url = "https://api.spotify.com/v1/me/tracks?next"
+#   headers = {'Authorization': "Bearer {}".format(access_token)}
+#   response = requests.request("GET", url, headers=headers)
+#   if response.status_code ==200:
+#       print('yaaaaaay success')
+#   data = response.json()
 
-  Tracks = Tracks + data['items']
+#   Tracks = Tracks + data['items']
 
-  while data['next'] is not None:
-      print ('next page found, downloading',data['next'])
-      response = requests.request("GET", data['next'], headers=headers)
-      data = response.json()
-      Tracks = Tracks + data['items']
-  print("We have", len(Tracks), "total results")
-  with open('music.json', 'w', encoding='utf-8') as f:
-      json.dump(Tracks, f, ensure_ascii=False, indent=4)
+#   while data['next'] is not None:
+#       print ('next page found, downloading',data['next'])
+#       response = requests.request("GET", data['next'], headers=headers)
+#       data = response.json()
+#       Tracks = Tracks + data['items']
+#   print("We have", len(Tracks), "total results")
+#   with open('music.json', 'w', encoding='utf-8') as f:
+#       json.dump(Tracks, f, ensure_ascii=False, indent=4)
   return render_template('success.html')
