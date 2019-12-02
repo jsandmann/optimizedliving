@@ -6,5 +6,5 @@ def hello():
     return "Hello Farts!"
 
 @app.route("/bigfarts")
-def hello():
+def hellothere():
     return "Hello BIG FARTS!"
