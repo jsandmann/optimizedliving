@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<style>
+
+a:link, a:visited {
+  background-color: black;
+  color: white;
+  padding: 15px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+.single-trending{
+	border: 0px solid black;
+	padding: 40px;
+		background: linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB);
+	background-size: 400% 400%;
+	-webkit-animation: Gradient 5s ease infinite;
+	-moz-animation: Gradient 5s ease infinite;
+	animation: Gradient 5s ease infinite;
+}
+@-webkit-keyframes Gradient {
+	0% {
+		background-position: 0% 50%
+	}
+	50% {
+		background-position: 100% 50%
+	}
+	100% {
+		background-position: 0% 50%
+	}
+}
+
+@-moz-keyframes Gradient {
+	0% {
+		background-position: 0% 50%
+	}
+	50% {
+		background-position: 100% 50%
+	}
+	100% {
+		background-position: 0% 50%
+	}
+}
+
+@keyframes Gradient {
+	0% {
+		background-position: 0% 50%
+	}
+	50% {
+		background-position: 100% 50%
+	}
+	100% {
+		background-position: 0% 50%
+	}
+}
+a:hover, a:active {
+  background-color: darkgray;
+}
+body {
+	font-family: 'Karla', sans-serif;
+	font-size: 18px;
+	border: 0px solid black;
+	padding: 40px;
+		background: linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB);
+	background-size: 900% 900%;
+	-webkit-animation: Gradient 5s ease infinite;
+	-moz-animation: Gradient 5s ease infinite;
+	animation: Gradient 5s ease infinite;
+}
+</style>
+<h1>
+	Optimized Living
+</h1>
+<body>
+<a href="https://accounts.spotify.com/authorize?client_id=f703f57d46f34a7e9fffc4df3b4a9994&response_type=code&redirect_uri=http://localhost:5000/callback&scope=user-top-read,playlist-read-private,user-library-read">Get Spotify Songs</a>
+<a href="https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=22BDK3&redirect_uri=http://localhost:5000/fitbitcallback&scope=activity%20nutrition%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight">Fitness</a>
+<a href="http://127.0.0.1:5000/plaid">Financial Well-being</a>
+<a href="http://127.0.0.1:5000/timeline">Timeline</a>
+<a href="http://127.0.0.1:5000/cards">Cards</a>
+</body>
+</html>
