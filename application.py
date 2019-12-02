@@ -3,7 +3,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello():
-    return "Hello Farts!"
+    return render_template('timeline.html')
 
 @app.route("/bigfarts")
 def hellothere():
