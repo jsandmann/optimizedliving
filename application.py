@@ -1,15 +1,5 @@
 from flask import Flask, render_template
-import webbrowser
-import base64
-import os
-import datetime
-import plaid
-import json
-import time
-from flask import Flask
-from flask import render_template
-from flask import request
-from flask import jsonify
+
 app = Flask(__name__)
 
 @app.route("/")
