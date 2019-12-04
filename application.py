@@ -39,6 +39,6 @@ def getlikedsongs():
       data = response.json()
       Tracks = Tracks + data['items']
   print("We have", len(Tracks), "total results")
-  with open('music.json', 'w', encoding='utf-8') as f:
-      json.dump(Tracks, f, ensure_ascii=False, indent=4)
   return render_template('success.html')
+  # with open('music.json', 'w', encoding='utf-8') as f:
+  #     json.dump(Tracks, f, ensure_ascii=False, indent=4)
