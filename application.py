@@ -6,13 +6,13 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello():
-    return render_template('home.html')
+  return render_template('home.html')
 
 @app.route("/bigfarts")
 def hellothere():
-    return "Hello BIG FARTS!"
+  return "Hello BIG FARTS!"
 
-@app.route('/callback')
+@app.route('/spotify')
 def getlikedsongs():
   #Get authorization code
   code=request.args.get('code')
@@ -33,13 +33,13 @@ def getlikedsongs():
   response = requests.request("GET", url, headers=headers)
   # if response.status_code ==200:
       # print('yaaaaaay success')
-  data = response.json()
-  Tracks = Tracks + data['items']
-  while data['next'] is not None:
-      # print ('next page found, downloading',data['next'])
-      response = requests.request("GET", data['next'], headers=headers)
-      data = response.json()
-      Tracks = Tracks + data['items']
+  # data = response.json()
+  # Tracks = Tracks + data['items']
+  # while data['next'] is not None:
+  #     # print ('next page found, downloading',data['next'])
+  #     response = requests.request("GET", data['next'], headers=headers)
+  #     data = response.json()
+  #     Tracks = Tracks + data['items']
   # print("We have", len(Tracks), "total results")
   return render_template('success.html')
   # with open('music.json', 'w', encoding='utf-8') as f:
