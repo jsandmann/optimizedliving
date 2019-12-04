@@ -14,7 +14,7 @@ def hellothere():
 def getlikedsongs():
   #Get authorization code
   code=request.args.get('code')
-  return render_template('success.html')
+
   # url = "https://accounts.spotify.com/api/token"
   # payload = "grant_type=authorization_code&code={}&redirect_uri=https://optimizedliving.azurewebsites.net/callback&client_id=f703f57d46f34a7e9fffc4df3b4a9994&client_secret=1fe906d84e3e4a0db0812483390bbd8b".format(code)
   # headers = {'Content-Type': "application/x-www-form-urlencoded"}
@@ -25,7 +25,7 @@ def getlikedsongs():
   # scope=parsed_json['scope']
   # expires_in=parsed_json['expires_in']
   # access_token=parsed_json['access_token']
-
+  return render_template('success.html')
   # Get Tracks
   # Tracks = []
   # url = "https://api.spotify.com/v1/me/tracks?next"
