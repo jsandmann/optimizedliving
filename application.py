@@ -31,7 +31,7 @@ def getlikedsongs():
   url = "https://api.spotify.com/v1/me/tracks?next"
   headers = {'Authorization': "Bearer {}".format(access_token)}
   response = requests.request("GET", url, headers=headers)
-  if response.status_code ==200:
+  # if response.status_code ==200:
       # print('yaaaaaay success')
   data = response.json()
   Tracks = Tracks + data['items']
