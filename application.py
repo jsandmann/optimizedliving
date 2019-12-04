@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, jsonify
+import json
 
 app = Flask(__name__)
 
@@ -19,7 +20,7 @@ def getlikedsongs():
   headers = {'Content-Type': "application/x-www-form-urlencoded"}
   response = requests.request("POST", url, data=payload, headers=headers)
   parsed_json=json.loads(response.text)
-  # print(parsed_json)
+  print(parsed_json)
   token_type=parsed_json['token_type']
   scope=parsed_json['scope']
   expires_in=parsed_json['expires_in']
@@ -38,7 +39,7 @@ def getlikedsongs():
       response = requests.request("GET", data['next'], headers=headers)
       data = response.json()
       Tracks = Tracks + data['items']
-  # print("We have", len(Tracks), "total results")
+  print("We have", len(Tracks), "total results")
   return render_template('success.html')
   # with open('music.json', 'w', encoding='utf-8') as f:
   #     json.dump(Tracks, f, ensure_ascii=False, indent=4)
