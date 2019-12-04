@@ -25,19 +25,16 @@ def getlikedsongs():
   scope=parsed_json['scope']
   expires_in=parsed_json['expires_in']
   access_token=parsed_json['access_token']
-  return render_template('success.html')
+  return response
   #Get Tracks
 #   Tracks = []
-
 #   url = "https://api.spotify.com/v1/me/tracks?next"
 #   headers = {'Authorization': "Bearer {}".format(access_token)}
 #   response = requests.request("GET", url, headers=headers)
 #   if response.status_code ==200:
 #       print('yaaaaaay success')
 #   data = response.json()
-
 #   Tracks = Tracks + data['items']
-
 #   while data['next'] is not None:
 #       print ('next page found, downloading',data['next'])
 #       response = requests.request("GET", data['next'], headers=headers)
