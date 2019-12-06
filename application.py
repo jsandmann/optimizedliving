@@ -21,18 +21,17 @@ def getlikedsongs():
   headers = {'Content-Type': "application/x-www-form-urlencoded"}
   response = requests.request("POST", url, data=payload, headers=headers)
   parsed_json=json.loads(response.text)
-  # print(parsed_json)
   token_type=parsed_json['token_type']
   scope=parsed_json['scope']
   expires_in=parsed_json['expires_in']
   access_token=parsed_json['access_token']
-  #Get Tracks
-  Tracks = []
   url = "https://api.spotify.com/v1/me/tracks?next"
   headers = {'Authorization': "Bearer {}".format(access_token)}
   response = requests.request("GET", url, headers=headers)
+  return render_template('success.html')
+  #  Tracks = []
   # if response.status_code ==200:
-      # print('yaaaaaay success')
+  #     print('yaaaaaay success')
   # data = response.json()
   # Tracks = Tracks + data['items']
   # while data['next'] is not None:
@@ -41,6 +40,13 @@ def getlikedsongs():
   #     data = response.json()
   #     Tracks = Tracks + data['items']
   # print("We have", len(Tracks), "total results")
-  return render_template('success.html')
+
   # with open('music.json', 'w', encoding='utf-8') as f:
   #     json.dump(Tracks, f, ensure_ascii=False, indent=4)
+
+# @app.route('/spotifynotifications')
+# def verifysubscription():
+
+@app.route('/timeline')
+def showtimeline():
+  return render_template('timeline.html')
