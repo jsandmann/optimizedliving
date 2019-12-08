@@ -40,7 +40,7 @@ def getlikedsongs():
   # with open('music.json', 'w', encoding='utf-8') as f:
   #     json.dump(Tracks, f, ensure_ascii=False, indent=4)
 
-@app.route('/fitbitnotifications', methods= ['GET'])
+@app.route('/fitbit/webhook', methods= ['GET'])
 def verify():
   code = request.args.get('verify')
   if code == 'f794c3dec3d45019fee976fc44132bec58eb050bfbdd6f579363b2443a0f6bf3':
