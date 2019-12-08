@@ -42,7 +42,8 @@ def getlikedsongs():
 
 @app.route('/fitbitnotifications', methods= ['GET'])
   def verify():
-    if verify == 'f794c3dec3d45019fee976fc44132bec58eb050bfbdd6f579363b2443a0f6bf3'
+    code=request.args.get('verify')
+    if code == 'f794c3dec3d45019fee976fc44132bec58eb050bfbdd6f579363b2443a0f6bf3'
       return 204
     else: return 404
 
