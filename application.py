@@ -40,11 +40,11 @@ def getlikedsongs():
   # with open('music.json', 'w', encoding='utf-8') as f:
   #     json.dump(Tracks, f, ensure_ascii=False, indent=4)
 
-@app.route('/fitbitcallback')
+@app.route('/fitbit')
 def getfitnessdata():
   code=request.args.get('code')
   url = "https://api.fitbit.com/oauth2/token"
-  querystring = {"code":code,"grant_type":"authorization_code","redirect_uri":"http://localhost:5000/fitbitcallback"}
+  querystring = {"code":code,"grant_type":"authorization_code","redirect_uri":"https://optimizedliving.azurewebsites.net/fitbit"}
   headers = {
     'Authorization': "Basic MjJCREszOjgyMGEzMmRjNzVkOGMxYWQ0OGUyYmFmNWVjMmYxN2Fk",
     'Content-Type': "application/x-www-form-urlencoded"
@@ -63,7 +63,6 @@ def verify():
   if code == 'f794c3dec3d45019fee976fc44132bec58eb050bfbdd6f579363b2443a0f6bf3':
     return ('good',204)
   else: return ('bad',404)
-
 
 @app.route('/timeline')
 def showtimeline():
