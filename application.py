@@ -40,6 +40,23 @@ def getlikedsongs():
   # with open('music.json', 'w', encoding='utf-8') as f:
   #     json.dump(Tracks, f, ensure_ascii=False, indent=4)
 
+@app.route('/fitbitcallback')
+def getfitnessdata():
+  code=request.args.get('code')
+  url = "https://api.fitbit.com/oauth2/token"
+  querystring = {"code":code,"grant_type":"authorization_code","redirect_uri":"http://localhost:5000/fitbitcallback"}
+  headers = {
+    'Authorization': "Basic MjJCREszOjgyMGEzMmRjNzVkOGMxYWQ0OGUyYmFmNWVjMmYxN2Fk",
+    'Content-Type': "application/x-www-form-urlencoded"
+    }
+  response = requests.request("POST", url, headers=headers, params=querystring)
+  parsed_json=json.loads(response.text)
+  access_token=parsed_json['access_token']
+  url = "https://api.fitbit.com/1/user/-/activities/heart/date/1m/1d.json"
+  headers = {'Authorization': "Bearer {}".format(access_token)}
+  response = requests.request("GET", url, headers=headers)
+  return 'Success', 200
+
 @app.route('/fitbit/webhook', methods= ['GET'])
 def verify():
   code = request.args.get('verify')
