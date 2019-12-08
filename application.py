@@ -41,11 +41,11 @@ def getlikedsongs():
   #     json.dump(Tracks, f, ensure_ascii=False, indent=4)
 
 @app.route('/fitbitnotifications', methods= ['GET'])
-  def verify():
-    code=request.args.get('verify')
-    if code == 'f794c3dec3d45019fee976fc44132bec58eb050bfbdd6f579363b2443a0f6bf3'
-      return 204
-    else: return 404
+def verify():
+  code = request.args.get('verify')
+  if code == 'f794c3dec3d45019fee976fc44132bec58eb050bfbdd6f579363b2443a0f6bf3':
+    return ('good',204)
+  else: return ('bad',404)
 
 
 @app.route('/timeline')
