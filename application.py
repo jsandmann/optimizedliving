@@ -5,12 +5,8 @@ import requests
 app = Flask(__name__)
 
 @app.route("/")
-def hello():
+def index():
   return render_template('home.html')
-
-@app.route("/bigfarts")
-def hellothere():
-  return "Hello BIG FARTS!"
 
 @app.route('/spotify')
 def getlikedsongs():
@@ -44,8 +40,12 @@ def getlikedsongs():
   # with open('music.json', 'w', encoding='utf-8') as f:
   #     json.dump(Tracks, f, ensure_ascii=False, indent=4)
 
-# @app.route('/spotifynotifications')
-# def verifysubscription():
+@app.route('/spotifynotifications', methods= ['GET'])
+  def verify():
+    if verify == 'f794c3dec3d45019fee976fc44132bec58eb050bfbdd6f579363b2443a0f6bf3'
+      return 204
+    else: return 404
+
 
 @app.route('/timeline')
 def showtimeline():
