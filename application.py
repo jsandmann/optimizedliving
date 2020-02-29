@@ -34,19 +34,19 @@ def showsetdata():
     "Date": date
   }
   setjson = json.dumps(set)
-  conn = pyodbc.connect('Driver={SQL Server};'
-                      'Server=optimizedliving.database.windows.net;'
-                      'Database=PersonalData;'
-                      'UID=jsandmann;'
-                      'PWD=Ocarinaoftime0!;'
-                      'Trusted_Connection=no;')
+  # conn = pyodbc.connect('Driver={SQL Server};'
+  #                     'Server=optimizedliving.database.windows.net;'
+  #                     'Database=PersonalData;'
+  #                     'UID=jsandmann;'
+  #                     'PWD=Ocarinaoftime0!;'
+  #                     'Trusted_Connection=no;')
 
-  cursor = conn.cursor()
-  cursor.execute('SELECT * FROM Calls')
-  data = cursor.fetchall()
-  calls = pandas.DataFrame(data)
-  table = pandas.DataFrame.to_html(calls)
-  return table
+  # cursor = conn.cursor()
+  # cursor.execute('SELECT * FROM Calls')
+  # data = cursor.fetchall()
+  # calls = pandas.DataFrame(data)
+  # table = pandas.DataFrame.to_html(calls)
+  return setjson
 
 @app.route('/spotify')
 def getlikedsongs():
@@ -102,3 +102,15 @@ def verify():
 @app.route('/timeline')
 def showtimeline():
   return render_template('timeline.html')
+
+@app.route('/plaid')
+def index():
+  return render_template(
+    'index.ejs',
+    plaid_public_key=PLAID_PUBLIC_KEY,
+    plaid_environment=PLAID_ENV,
+    plaid_products=PLAID_PRODUCTS,
+    plaid_country_codes=PLAID_COUNTRY_CODES,
+  )
+
+access_token = None
