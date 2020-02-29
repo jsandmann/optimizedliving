@@ -1,12 +1,52 @@
 from flask import Flask, render_template, request, jsonify
 import json
 import requests
+import pyodbc
+import pandas
+import base64
+import os
+import datetime
+import plaid
+import json
+import time
+import jsonify
 
 app = Flask(__name__)
 
 @app.route("/")
 def index():
   return render_template('home.html')
+
+@app.route('/exercsise/newset')
+def showform():
+  return render_template('exerciseform.html')
+
+@app.route('/exercisesubmit')
+def showsetdata():
+  exercise=request.args.get('exercise')
+  reps=request.args.get('reps')
+  date=request.args.get('date')
+  weight=request.args.get('weight')
+  set = {
+    "Exercise": exercise,
+    "Repetitions": reps,
+    "Weight": weight,
+    "Date": date
+  }
+  setjson = json.dumps(set)
+  conn = pyodbc.connect('Driver={SQL Server};'
+                      'Server=optimizedliving.database.windows.net;'
+                      'Database=PersonalData;'
+                      'UID=jsandmann;'
+                      'PWD=Ocarinaoftime0!;'
+                      'Trusted_Connection=no;')
+
+  cursor = conn.cursor()
+  cursor.execute('SELECT * FROM Calls')
+  data = cursor.fetchall()
+  calls = pandas.DataFrame(data)
+  table = pandas.DataFrame.to_html(calls)
+  return table
 
 @app.route('/spotify')
 def getlikedsongs():
@@ -17,17 +57,12 @@ def getlikedsongs():
   headers = {'Content-Type': "application/x-www-form-urlencoded"}
   response = requests.request("POST", url, data=payload, headers=headers)
   parsed_json=json.loads(response.text)
-  token_type=parsed_json['token_type']
-  scope=parsed_json['scope']
-  expires_in=parsed_json['expires_in']
   access_token=parsed_json['access_token']
   url = "https://api.spotify.com/v1/me/tracks?next"
   headers = {'Authorization': "Bearer {}".format(access_token)}
   response = requests.request("GET", url, headers=headers)
   return render_template('success.html')
   #  Tracks = []
-  # if response.status_code ==200:
-  #     print('yaaaaaay success')
   # data = response.json()
   # Tracks = Tracks + data['items']
   # while data['next'] is not None:
