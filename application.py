@@ -17,7 +17,7 @@ app = Flask(__name__)
 def index():
   return render_template('home.html')
 
-@app.route('/exercise/newset')
+@app.route('/exercise')
 def showform():
   return render_template('exerciseform.html')
 
@@ -158,3 +158,119 @@ def get_transactions():
     return jsonify(format_error(e))
   pretty_print_response(transactions_response)
   return jsonify({'error': None, 'transactions': transactions_response})
+
+  @app.route('/identity', methods=['GET'])
+
+def get_identity():
+  try:
+    identity_response = client.Identity.get(access_token)
+  except plaid.errors.PlaidError as e:
+    return jsonify({'error': {'display_message': e.display_message, 'error_code': e.code, 'error_type': e.type } })
+  pretty_print_response(identity_response)
+  return jsonify({'error': None, 'identity': identity_response})
+
+@app.route('/balance', methods=['GET'])
+def get_balance():
+  try:
+    balance_response = client.Accounts.balance.get(access_token)
+  except plaid.errors.PlaidError as e:
+    return jsonify({'error': {'display_message': e.display_message, 'error_code': e.code, 'error_type': e.type } })
+  pretty_print_response(balance_response)
+  return jsonify({'error': None, 'balance': balance_response})
+
+@app.route('/accounts', methods=['GET'])
+def get_accounts():
+  try:
+    accounts_response = client.Accounts.get(access_token)
+  except plaid.errors.PlaidError as e:
+    return jsonify({'error': {'display_message': e.display_message, 'error_code': e.code, 'error_type': e.type } })
+  pretty_print_response(accounts_response)
+  return jsonify({'error': None, 'accounts': accounts_response})
+
+@app.route('/assets', methods=['GET'])
+def get_assets():
+  try:
+    asset_report_create_response = client.AssetReport.create([access_token], 10)
+  except plaid.errors.PlaidError as e:
+    return jsonify({'error': {'display_message': e.display_message, 'error_code': e.code, 'error_type': e.type } })
+  pretty_print_response(asset_report_create_response)
+
+  asset_report_token = asset_report_create_response['asset_report_token']
+
+  # Poll for the completion of the Asset Report.
+  num_retries_remaining = 20
+  asset_report_json = None
+  while num_retries_remaining > 0:
+    try:
+      asset_report_get_response = client.AssetReport.get(asset_report_token)
+      asset_report_json = asset_report_get_response['report']
+      break
+    except plaid.errors.PlaidError as e:
+      if e.code == 'PRODUCT_NOT_READY':
+        num_retries_remaining -= 1
+        time.sleep(1)
+        continue
+      return jsonify({'error': {'display_message': e.display_message, 'error_code': e.code, 'error_type': e.type } })
+
+  if asset_report_json == None:
+    return jsonify({'error': {'display_message': 'Timed out when polling for Asset Report', 'error_code': e.code, 'error_type': e.type } })
+
+  asset_report_pdf = None
+  try:
+    asset_report_pdf = client.AssetReport.get_pdf(asset_report_token)
+  except plaid.errors.PlaidError as e:
+    return jsonify({'error': {'display_message': e.display_message, 'error_code': e.code, 'error_type': e.type } })
+
+  return jsonify({
+    'error': None,
+    'json': asset_report_json,
+    'pdf': base64.b64encode(asset_report_pdf),
+  })
+
+@app.route('/holdings', methods=['GET'])
+def get_holdings():
+  try:
+    holdings_response = client.Holdings.get(access_token)
+  except plaid.errors.PlaidError as e:
+    return jsonify({'error': {'display_message': e.display_message, 'error_code': e.code, 'error_type': e.type } })
+  pretty_print_response(holdings_response)
+  return jsonify({'error': None, 'holdings': holdings_response})
+
+@app.route('/investment_transactions', methods=['GET'])
+def get_investment_transactions():
+  # Pull transactions for the last 30 days
+  start_date = '{:%Y-%m-%d}'.format(datetime.datetime.now() + datetime.timedelta(-30))
+  end_date = '{:%Y-%m-%d}'.format(datetime.datetime.now())
+  try:
+    investment_transactions_response = client.InvestmentTransactions.get(access_token,
+                                                                         start_date,
+                                                                         end_date)
+  except plaid.errors.PlaidError as e:
+    return jsonify(format_error(e))
+  pretty_print_response(investment_transactions_response)
+  return jsonify({'error': None, 'investment_transactions': investment_transactions_response})
+
+@app.route('/item', methods=['GET'])
+def item():
+  global access_token
+  item_response = client.Item.get(access_token)
+  institution_response = client.Institutions.get_by_id(item_response['item']['institution_id'])
+  pretty_print_response(item_response)
+  pretty_print_response(institution_response)
+  return jsonify({'error': None, 'item': item_response['item'], 'institution': institution_response['institution']})
+
+@app.route('/set_access_token', methods=['POST'])
+def set_access_token():
+  global access_token
+  access_token = request.form['access_token']
+  item = client.Item.get(access_token)
+  return jsonify({'error': None, 'item_id': item['item']['item_id']})
+
+def pretty_print_response(response):
+  print(json.dumps(response, indent=2, sort_keys=True))
+
+def format_error(e):
+  return {'error': {'display_message': e.display_message, 'error_code': e.code, 'error_type': e.type, 'error_message': e.message } }
+
+if __name__ == '__main__':
+    app.run(port=os.getenv('PORT', 5000))
