@@ -158,4 +158,3 @@ def get_transactions():
     return jsonify(format_error(e))
   pretty_print_response(transactions_response)
   return jsonify({'error': None, 'transactions': transactions_response})
-
