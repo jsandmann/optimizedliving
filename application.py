@@ -14,7 +14,7 @@ import jsonify
 app = Flask(__name__)
 
 @app.route("/")
-def index():
+def home():
   return render_template('home.html')
 
 @app.route('/exercise')
@@ -106,9 +106,9 @@ def showtimeline():
 PLAID_CLIENT_ID = os.getenviron['PLAID_CLIENT_ID']
 PLAID_SECRET = os.getenviron['PLAID_SECRET']
 PLAID_PUBLIC_KEY = os.getenviron['PLAID_PUBLIC_KEY']
-PLAID_ENV = os.getenviron['PLAID_ENV', 'development']
-PLAID_PRODUCTS = os.getenviron['PLAID_PRODUCTS', 'transactions']
-PLAID_COUNTRY_CODES = os.getenviron['PLAID_COUNTRY_CODES', 'US,CA,GB,FR,ES']
+PLAID_ENV = os.getenviron['PLAID_ENV']
+PLAID_PRODUCTS = os.getenviron['PLAID_PRODUCTS']
+PLAID_COUNTRY_CODES = os.getenviron['PLAID_COUNTRY_CODES']
 
 client = plaid.Client(client_id = PLAID_CLIENT_ID, secret=PLAID_SECRET,
                       public_key=PLAID_PUBLIC_KEY, environment=PLAID_ENV, api_version='2019-05-29')
