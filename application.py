@@ -102,3 +102,60 @@ def verify():
 @app.route('/timeline')
 def showtimeline():
   return render_template('timeline.html')
+
+PLAID_CLIENT_ID = os.getenv('PLAID_CLIENT_ID')
+PLAID_SECRET = os.getenv('PLAID_SECRET')
+PLAID_PUBLIC_KEY = os.getenv('PLAID_PUBLIC_KEY')
+PLAID_ENV = os.getenv('PLAID_ENV', 'development')
+PLAID_PRODUCTS = os.getenv('PLAID_PRODUCTS', 'transactions')
+PLAID_COUNTRY_CODES = os.getenv('PLAID_COUNTRY_CODES', 'US,CA,GB,FR,ES')
+
+client = plaid.Client(client_id = PLAID_CLIENT_ID, secret=PLAID_SECRET,
+                      public_key=PLAID_PUBLIC_KEY, environment=PLAID_ENV, api_version='2019-05-29')
+
+@app.route('/plaid')
+def index():
+  return render_template(
+    'index.ejs',
+    plaid_public_key=PLAID_PUBLIC_KEY,
+    plaid_environment=PLAID_ENV,
+    plaid_products=PLAID_PRODUCTS,
+    plaid_country_codes=PLAID_COUNTRY_CODES,
+  )
+
+access_token = None
+
+@app.route('/get_access_token', methods=['POST'])
+def get_access_token():
+  global access_token
+  public_token = request.form['public_token']
+  try:
+    exchange_response = client.Item.public_token.exchange(public_token)
+  except plaid.errors.PlaidError as e:
+    return jsonify(format_error(e))
+
+  pretty_print_response(exchange_response)
+  access_token = exchange_response['access_token']
+  return jsonify(exchange_response)
+
+@app.route('/auth', methods=['GET'])
+def get_auth():
+  try:
+    auth_response = client.Auth.get(access_token)
+  except plaid.errors.PlaidError as e:
+    return jsonify({'error': {'display_message': e.display_message, 'error_code': e.code, 'error_type': e.type } })
+  pretty_print_response(auth_response)
+  return jsonify({'error': None, 'auth': auth_response})
+
+@app.route('/transactions', methods=['GET'])
+def get_transactions():
+  # Pull transactions for the last 30 days
+  start_date = '{:%Y-%m-%d}'.format(datetime.datetime.now() + datetime.timedelta(-30))
+  end_date = '{:%Y-%m-%d}'.format(datetime.datetime.now())
+  try:
+    transactions_response = client.Transactions.get(access_token, start_date, end_date)
+  except plaid.errors.PlaidError as e:
+    return jsonify(format_error(e))
+  pretty_print_response(transactions_response)
+  return jsonify({'error': None, 'transactions': transactions_response})
+
