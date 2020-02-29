@@ -9,3 +9,4 @@ wsgiref==0.1.2 ; python_version < '3.2'
 plaid-python>=3.0
 pyodbc
 pandas
+jsonify
