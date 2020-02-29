@@ -17,7 +17,7 @@ app = Flask(__name__)
 def index():
   return render_template('home.html')
 
-@app.route('/exercsise/newset')
+@app.route('/exercise/newset')
 def showform():
   return render_template('exerciseform.html')
 
