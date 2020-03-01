@@ -34,19 +34,15 @@ def showsetdata():
     "Date": date
   }
   setjson = json.dumps(set)
-  # conn = pyodbc.connect('Driver={SQL Server};'
-  #                     'Server=optimizedliving.database.windows.net;'
-  #                     'Database=PersonalData;'
-  #                     'UID=jsandmann;'
-  #                     'PWD=Ocarinaoftime0!;'
-  #                     'Trusted_Connection=no;')
+  setjson = json.dumps(set)
+  url = "https://prod-03.westus.logic.azure.com:443/workflows/d84729561c564a8ab5733de21a8e9325/triggers/request/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Frequest%2Frun&sv=1.0&sig=68j9bz-Q3rcD3y878H0eFC-gELVRG6fc6aF4l87uMFs"
 
-  # cursor = conn.cursor()
-  # cursor.execute('SELECT * FROM Calls')
-  # data = cursor.fetchall()
-  # calls = pandas.DataFrame(data)
-  # table = pandas.DataFrame.to_html(calls)
-  return setjson
+  payload = setjson
+  headers = {
+  'Content-Type': 'application/json'
+  }
+  response = requests.request("POST", url, headers=headers, data = payload)
+  return render_template('success.html')
 
 @app.route('/spotify')
 def getlikedsongs():
