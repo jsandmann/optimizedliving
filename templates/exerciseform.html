@@ -21,7 +21,18 @@ input[type=submit] {
   border-radius: 4px;
   cursor: pointer;
 }
-
+.testclass{
+    border: 1px transparent solid;
+    background-clip: padding-box;
+    border-radius: 5px;
+    display: block;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0.92857em 0.78571em;
+    word-break: normal;
+    line-height: inherit;
+}
 input[type=submit]:hover {
   background-color: #45a049;
 }
@@ -36,24 +47,19 @@ div {
 
 <div>
   <form action="/exercisesubmit">
-
-    <label for="date">Date</label>
-    <input type="date" id="date" name="date" placeholder="Workout Date">
-
-    <label for="exercise">Exercise</label>
-    <select id="exercise" name="exercise">
+    <label for="date" class="testclass">Date</label>
+    <input type="date" class="testclass" id="date" name="date" placeholder="Workout Date">
+    <label for="exercise" class="testclass">Exercise</label>
+    <select id="exercise" class="testclass" name="exercise">
       <option value="Bench Press">Bench Press</option>
       <option value="Leg Press">Leg Press</option>
       <option value="Dead Lift">Dead Lift</option>
     </select>
-
-    <label for="reps">Repetitions</label>
-    <input type="number" id="reps" name="reps" placeholder="Reps in the set">
-
-    <label for="weight">Weight</label>
-    <input type="number" id="weight" name="weight" placeholder="Total Weight">
-
-    <input type="submit" value="Submit">
+    <label for="reps" class="testclass">Repetitions</label>
+    <input type="number"  class="testclass"id="reps" name="reps" placeholder="Reps in the set">
+    <label for="weight" class="testclass">Weight</label>
+    <input type="number" class="testclass" id="weight" name="weight" placeholder="Total Weight">
+    <input type="submit" class="testclass" value="Submit">
   </form>
 </div>
 
