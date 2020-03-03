@@ -30,7 +30,7 @@ def home():
 
 @app.route('/spotifyauth')
 def spotifyauth():
-  redirect_uri = 'http://optimizedliving.azurewebsites.net/spotify'
+  redirect_uri = 'https://optimizedliving.azurewebsites.net/spotify'
   scope = 'user-top-read,playlist-read-private,user-library-read'
   return redirect("https://accounts.spotify.com/authorize?client_id={}&response_type=code&redirect_uri={}&scope={}".format(SPOTIFY_CLIENT_ID, redirect_uri, scope))
 
@@ -39,7 +39,7 @@ def getlikedsongs():
   #Get authorization code
   code = request.args.get('code')
   url = "https://accounts.spotify.com/api/token"
-  redirect_uri = 'http://localhost:5000/callback'
+  redirect_uri = 'https://optimizedliving.azurewebsites.net'
   payload = "grant_type=authorization_code&code={}&redirect_uri={}&client_id={}&client_secret={}".format(code, redirect_uri, SPOTIFY_CLIENT_ID, SPOTIFY_SECRET)
   headers = {'Content-Type': "application/x-www-form-urlencoded"}
   response = requests.request("POST", url, data=payload, headers=headers)
@@ -59,7 +59,7 @@ def getfitbitauth():
 
 @app.route('/fitbit')
 def getfitnessdata():
-  code=request.args.get('code')
+  code = request.args.get('code')
   url = "https://api.fitbit.com/oauth2/token"
   querystring = {"code":code,"grant_type":"authorization_code","redirect_uri":"https://optimizedliving.azurewebsites.net/fitbit"}
   headers = {
@@ -67,8 +67,8 @@ def getfitnessdata():
     'Content-Type': "application/x-www-form-urlencoded"
     }
   response = requests.request("POST", url, headers=headers, params=querystring)
-  parsed_json=json.loads(response.text)
-  access_token=parsed_json['access_token']
+  parsed_json = json.loads(response.text)
+  access_token = parsed_json['access_token']
   url = "https://api.fitbit.com/1/user/-/activities/heart/date/1m/1d.json"
   headers = {'Authorization': "Bearer {}".format(access_token)}
   response = requests.request("GET", url, headers=headers)
