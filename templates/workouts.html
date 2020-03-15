@@ -1,0 +1,55 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        #sets {
+          font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+        
+        #sets td, #sets th {
+          border: 1px solid #ddd;
+          padding: 8px;
+        }
+        
+        #sets tr:nth-child(even){background-color: #f2f2f2;}
+        
+        #sets tr:hover {background-color: #ddd;}
+        
+        #sets th {
+          padding-top: 12px;
+          padding-bottom: 12px;
+          text-align: left;
+          background-color: #4CAF50;
+          color: white;
+        }
+        </style>
+</head>
+<body>
+    <table id="sets">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Exercise</th>
+            <th>Reps</th>
+            <th>Weight</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for item in data %}
+            <tr>
+                <td>{{item[0]}}</td>
+                <td>{{item[1]}}</td>
+                <td>{{item[2]}}</td>
+                <td>{{item[3]}}</td>
+                <td>{{item[4]}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
