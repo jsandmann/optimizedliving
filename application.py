@@ -13,6 +13,9 @@ import jsonify
 
 app = Flask(__name__)
 
+cnxn = pyodbc.connect('DRIVER={SQL Server};SERVER=optimizedliving.database.windows.net;DATABASE=Personal Data;UID=jsandmann;PWD=Ocarinaoftime0!')
+cursor = cnxn.cursor()
+
 SPOTIFY_SECRET = os.getenv('SPOTIFY_SECRET')
 SPOTIFY_CLIENT_ID = os.getenv('SPOTIFY_CLIENT_ID')
 PLAID_CLIENT_ID = os.getenv('PLAID_CLIENT_ID')
@@ -27,6 +30,7 @@ FITBIT_AUTH_CODE = os.getenv('FITBIT_AUTH_CODE')
 @app.route("/")
 def home():
   return render_template('home.html')
+
 @app.route("/health")
 def health():
   return render_template('health.html')
@@ -88,28 +92,21 @@ def verify():
 def showform():
   return render_template('exerciseform.html')
 
-@app.route('/exercisesubmit')
+@app.route('/workouts')
 def showsetdata():
-  exercise=request.args.get('exercise')
-  reps=request.args.get('reps')
-  date=request.args.get('date')
-  weight=request.args.get('weight')
-  set = {
-    "Exercise": exercise,
-    "Repetitions": reps,
-    "Weight": weight,
-    "Date": date
-  }
-  setjson = json.dumps(set)
-  setjson = json.dumps(set)
-  url = "https://prod-03.westus.logic.azure.com:443/workflows/d84729561c564a8ab5733de21a8e9325/triggers/request/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Frequest%2Frun&sv=1.0&sig=68j9bz-Q3rcD3y878H0eFC-gELVRG6fc6aF4l87uMFs"
+    cursor.execute("SELECT * FROM SetData ORDER BY [DateTime] DESC") 
+    data = cursor.fetchall() 
+    return render_template('workouts.html',data=data)
 
-  payload = setjson
-  headers = {
-  'Content-Type': 'application/json'
-  }
-  response = requests.request("POST", url, headers=headers, data = payload)
-  return render_template('success.html')
+@app.route('/logexercise', methods=['POST'])
+def logexercise():
+    date = request.form['date']
+    exercise = request.form['exercise']
+    reps = request.form['reps']
+    weight = request.form['weight']
+    cursor.execute("INSERT INTO SetData (DateTime, Exercise, Repetitions, Weight) VALUES (?,?,?,?)", date,exercise,reps,weight)
+    cnxn.commit()
+    return redirect('/workouts')
 
 @app.route('/timeline')
 def showtimeline():
