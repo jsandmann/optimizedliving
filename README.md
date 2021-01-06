@@ -1,2 +1,2 @@
 #Optimized Living
-description: "This app colelcts personal data and reports it in a way that's helpful for people."
+This app colelcts personal data and reports it in a way that's helpful for people.
